@@ -34,6 +34,9 @@ package Chapter4_RecursiveAndDynamicProgramming.MinimumCurrencyForMoneyExchange;
         ==> dp[i][j] = min{dp[i-1][j], min{dp[i-1][j-x*arr[i]] + x (1<=x)}}
         ==> dp[i][j] = min{dp[i-1][j], min{dp[i-1][j-arr[i]-y*arr[i]]+y+1 (0<=y)}}
 
+        又因为min{dp[i-1][j-arr[i]-y*arr[i]]+y,(0<=y)} ==>dp[i][j-arr[i]],所以
+        dp[i][j] = min{dp[i-1][j],dp[i][j-arr[i]]+1}
+
  【补充题目】
     给定数组 arr ， arr 中所有的值都为正数。每个值仅代表一张钱的面值，在给定一个整数 aim 代表要找的钱数，求组成 aim 的最少货币数
 
@@ -56,6 +59,45 @@ package Chapter4_RecursiveAndDynamicProgramming.MinimumCurrencyForMoneyExchange;
 public class MinimumCurrencyForMoneyExchange {
 
     // 题目1
+    public static int minimumCurrencyForMoneyExchange(int[] arr, int aim){
+        if (arr == null || arr.length == 0 || aim < 0) {
+            return -1;
+        }
+        int n = arr.length;
+        int max = Integer.MAX_VALUE;
+        int dp[][] = new int[n][aim + 1];
+        for (int j = 1; j <= aim; j++){
+            dp[0][j] = max;
+            if (j - arr[0] >= 0 && dp[0][j - arr[0]] != max) {
+                dp[0][j] = dp[0][j - arr[0]] + 1;
+            }
+        }
+        int left = 0;
+        for (int i = 1; i < n; i++){
+            for (int j = 1; j <= aim; j++){
+                left = max;
+                if (j - arr[i] >= 0 && dp[i][j - arr[i]] != max){
+                    left = dp[i][j - arr[i]] + 1;
+                }
+                dp[i][j] = Math.min(left, dp[i-1][j]);
+            }
+        }
+        return dp[n - 1][aim] != max ? dp[n - 1][aim] : -1;
+    }
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
