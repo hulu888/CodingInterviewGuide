@@ -21,8 +21,32 @@ class Node{
 
 public class RemoveLastKthNode {
 
-    public static Node removeSingleListLastKthNode(Node head){
-
+    public static Node removeSingleListLastKthNode(Node head, int kth){
+        if (head == null || kth < 1){
+            return head;
+        }
+        Node cur = head;
+        while (cur != null){
+            kth--;
+            cur = cur.next;
+        }
+        if (kth == 0){
+            // 倒数第k个节点就是头节点
+            return head.next;
+        }
+        if (kth > 0){
+            // 倒数第k个节点不存在
+            return null;
+        }
+        if (kth < 0){
+            cur = head;
+            while (kth != 0){
+                cur = cur.next;
+                kth++;
+            }
+            cur.next = cur.next.next;
+        }
+        return head;
     }
 
     public static Node removeDoubleListLastKthNode(Node head){
