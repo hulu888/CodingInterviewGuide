@@ -18,6 +18,15 @@ class Node{
     }
 }
 
+class DoubleNode{
+    int val;
+    DoubleNode next;
+    DoubleNode pre;
+    DoubleNode (int x){
+        this.val = x;
+    }
+}
+
 
 public class RemoveLastKthNode {
 
@@ -45,12 +54,40 @@ public class RemoveLastKthNode {
                 kth++;
             }
             cur.next = cur.next.next;
+
         }
         return head;
     }
 
-    public static Node removeDoubleListLastKthNode(Node head){
-
+    public static DoubleNode removeDoubleListLastKthNode(DoubleNode head, int kth){
+        if (head == null || kth < 1){
+            return head;
+        }
+        DoubleNode cur = head;
+        while (cur != null){
+            kth--;
+            cur = cur.next;
+        }
+        if (kth == 0){
+            head = head.next;
+            head.pre = null;
+        }
+        if (kth > 0){
+            return null;
+        }
+        if (kth < 0){
+            cur = head;
+            while (kth != 0){
+                cur = cur.next;
+                kth++;
+            }
+            DoubleNode newNode = cur.next.next;
+            cur.next = newNode;
+            if (newNode != null){
+                newNode.pre = cur;
+            }
+        }
+        return head;
     }
 
     public static void main(String[] args) {
@@ -58,3 +95,19 @@ public class RemoveLastKthNode {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
